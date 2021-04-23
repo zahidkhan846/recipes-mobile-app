@@ -1,9 +1,18 @@
 import React from "react";
-import BottomTabBar from "./navigation/Navigation";
+import SideDrawer from "./navigation/Navigation";
 import { useFonts } from "expo-font";
 import { enableScreens } from "react-native-screens";
+import { combineReducers, createStore } from "redux";
+import foodReducer from "./store/reducers/food";
+import { Provider } from "react-redux";
 
 enableScreens();
+
+const rootReducer = combineReducers({
+  food: foodReducer,
+});
+
+const store = createStore(rootReducer);
 
 export default function App() {
   const [loaded] = useFonts({
@@ -15,5 +24,9 @@ export default function App() {
     return null;
   }
 
-  return <BottomTabBar />;
+  return (
+    <Provider store={store}>
+      <SideDrawer />
+    </Provider>
+  );
 }

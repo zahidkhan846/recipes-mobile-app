@@ -1,14 +1,16 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import FoodList from "../components/FoodList";
 import { CATEGORIES } from "../data/category";
-import { CATEGORISED_FOODS } from "../data/foods";
 
 const CategorisedFoodsScreen = ({ navigation }) => {
+  const foods = useSelector((state) => state.food.filteredFoods);
+
   const { getParam } = navigation;
 
   const categoryId = getParam("categoryId");
 
-  const categorisedFoods = CATEGORISED_FOODS.filter(
+  const categorisedFoods = foods.filter(
     (cf) => cf.categoryIds.indexOf(categoryId) >= 0
   );
 

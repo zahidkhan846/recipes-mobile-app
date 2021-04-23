@@ -4,7 +4,7 @@ import { colors } from "../constants/colors";
 import CategoryScreen from "../screens/CategoryScreen";
 import FoodDetailScreen from "../screens/FoodDetailScreen";
 import CategorisedFoodsScreen from "../screens/CategorisedFoodsScreen";
-import FavoriteScreen from "../screens/FavoriteScreen";
+import FavouriteScreen from "../screens/FavouriteScreen";
 import { createMaterialBottomTabNavigator } from "react-navigation-material-bottom-tabs";
 import { Platform } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
@@ -51,9 +51,7 @@ const saveButton = (arg) => {
         title="Save"
         iconName="ios-save"
         color={colors.green}
-        onPress={() => {
-          console.log("save");
-        }}
+        onPress={arg.navigation.getParam("save")}
       />
     </HeaderButtons>
   );
@@ -85,7 +83,7 @@ const FoodNavigator = createStackNavigator(
 const FavoriteNavigator = createStackNavigator(
   {
     Favorites: {
-      screen: FavoriteScreen,
+      screen: FavouriteScreen,
       navigationOptions: {
         headerTitle: "Favorites",
       },

@@ -1,14 +1,35 @@
-import React from "react";
+import React, { useCallback, useEffect } from "react";
 import { ScrollView } from "react-native";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
+import { useDispatch, useSelector } from "react-redux";
 import FoodDetail from "../components/FoodDetail";
 import IconButton from "../components/IconButton";
-import { CATEGORISED_FOODS } from "../data/foods";
+import { toggleFavouriteAction } from "../store/actions/food";
 
 const FoodDetailScreen = ({ navigation }) => {
   const foodId = navigation.getParam("foodId");
 
-  const selectedFood = CATEGORISED_FOODS.find((cf) => cf.id === foodId);
+  const foods = useSelector((state) => state.food.foods);
+
+  const favDocs = useSelector((state) => state.food.favourites);
+
+  const isFavourite = favDocs.some((f) => f.id === foodId);
+
+  const dispatch = useDispatch();
+
+  const toggleFavourite = useCallback(() => {
+    dispatch(toggleFavouriteAction(foodId));
+  }, [dispatch, foodId]);
+
+  const selectedFood = foods.find((cf) => cf.id === foodId);
+
+  useEffect(() => {
+    navigation.setParams({ toggleFav: toggleFavourite });
+  }, [toggleFavourite]);
+
+  useEffect(() => {
+    navigation.setParams({ isFav: isFavourite });
+  }, [isFavourite]);
 
   return (
     <ScrollView>
@@ -18,18 +39,19 @@ const FoodDetailScreen = ({ navigation }) => {
 };
 
 FoodDetailScreen.navigationOptions = (navigationData) => {
-  const handleLike = () => {
-    console.log("Liked");
-  };
+  const title = navigationData.navigation.getParam("foodTitle");
+  const handleLike = navigationData.navigation.getParam("toggleFav");
+  const isFav = navigationData.navigation.getParam("isFav");
 
-  const fId = navigationData.navigation.getParam("foodId");
-
-  const food = CATEGORISED_FOODS.find((f) => f.id === fId);
   return {
-    headerTitle: food.title,
+    headerTitle: title,
     headerRight: () => (
       <HeaderButtons HeaderButtonComponent={IconButton}>
-        <Item title="fev" iconName="heart-outline" onPress={handleLike} />
+        <Item
+          title="fav"
+          iconName={isFav ? "heart" : "heart-outline"}
+          onPress={handleLike}
+        />
       </HeaderButtons>
     ),
   };

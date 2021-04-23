@@ -1,37 +1,31 @@
 import React from "react";
-import { useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { colors } from "../constants/colors";
 import Toggler from "./Switch";
 
-const Filters = () => {
-  const [isGlutenFree, setIsGlutenFree] = useState(false);
-  const [isLactoseFree, setIsLactoseFree] = useState(false);
-  const [isVegan, setIsVegan] = useState(false);
-  const [isVegetarian, setIsVegetarian] = useState(false);
-
+const Filters = (props) => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Filter your Meal</Text>
       <Toggler
         title="Gluten Free"
-        value={isGlutenFree}
-        onValueChange={(newValue) => setIsGlutenFree(newValue)}
+        value={props.isGlutenFree}
+        onValueChange={(newValue) => props.setIsGlutenFree(newValue)}
       />
       <Toggler
         title="Lactose Free"
-        value={isLactoseFree}
-        onValueChange={(newValue) => setIsLactoseFree(newValue)}
+        value={props.isLactoseFree}
+        onValueChange={(newValue) => props.setIsLactoseFree(newValue)}
       />
       <Toggler
         title="Vegan"
-        value={isVegan}
-        onValueChange={(newValue) => setIsVegan(newValue)}
+        value={props.isVegan}
+        onValueChange={(newValue) => props.setIsVegan(newValue)}
       />
       <Toggler
         title="Vegetarian"
-        value={isVegetarian}
-        onValueChange={(newValue) => setIsVegetarian(newValue)}
+        value={props.isVegetarian}
+        onValueChange={(newValue) => props.setIsVegetarian(newValue)}
       />
     </View>
   );
