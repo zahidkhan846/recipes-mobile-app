@@ -1,5 +1,5 @@
 import { CATEGORISED_FOODS } from "../../data/foods";
-import { TOGGLE_FAVOURITE } from "../actions/food";
+import { SET_FILTERS, TOGGLE_FAVOURITE } from "../actions/food";
 
 const initialState = {
   foods: CATEGORISED_FOODS,
@@ -30,6 +30,20 @@ const foodReducer = (state = initialState, action) => {
         };
       }
     }
+    case SET_FILTERS:
+      const appliedFilters = action.payload;
+
+      const selectedFilters = state.foods.filter((food) => {
+        if (appliedFilters.lactoseFree && !food.isLactoseFree) return false;
+        if (appliedFilters.glutenFree && !food.isGlutenFree) return false;
+        if (appliedFilters.vegan && !food.isVegan) return false;
+        if (appliedFilters.veg && !food.isVegetarian) return false;
+        return true;
+      });
+      return {
+        ...state,
+        filteredFoods: selectedFilters,
+      };
     default:
       return state;
   }

@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { useCallback } from "react";
+import { useDispatch } from "react-redux";
 import Filters from "../components/Filters";
+import { setFiltersAction } from "../store/actions/food";
 
 const FilterScreen = ({ navigation }) => {
   const [isGlutenFree, setIsGlutenFree] = useState(false);
   const [isLactoseFree, setIsLactoseFree] = useState(false);
   const [isVegan, setIsVegan] = useState(false);
   const [isVegetarian, setIsVegetarian] = useState(false);
+
+  const dispatch = useDispatch();
 
   const collectFilterData = useCallback(() => {
     const collectedData = {
@@ -15,8 +19,9 @@ const FilterScreen = ({ navigation }) => {
       vegan: isVegan,
       veg: isVegetarian,
     };
-    console.log(collectedData);
-  }, [isGlutenFree, isLactoseFree, isVegan, isVegetarian]);
+
+    dispatch(setFiltersAction(collectedData));
+  }, [dispatch, isGlutenFree, isLactoseFree, isVegan, isVegetarian]);
 
   useEffect(() => {
     navigation.setParams({ save: collectFilterData });
